@@ -1,0 +1,10 @@
+{% comment %}
+  Usage and details:
+
+  `title`: Use's the site title and `page_title` meta field. Fallsback to page title if `page_title` is empty.
+  `description`: Uses page's excerpt. Falls back to `description` site meta field.
+{% endcomment %}
+
+<title>{{site.title}} | {{meta.page_title | fallback:title}}</title>
+<meta name="description" content="{{excerpt | fallback:site.meta.description | strip_html | escape}}">
+<link rel="alternate" type="application/rss+xml" href="{{site.feed_url}}">

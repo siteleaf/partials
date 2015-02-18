@@ -1,0 +1,25 @@
+{% comment %}
+  Usage and details:
+
+  `og:description`: Uses page's excerpt. Falls back to `description` site meta field.
+  A detailed description of the piece of content, usually between 2 and 4 sentences. This tag is technically optional, but can improve the rate at which links are read and shared.
+
+  `og:image`: Uses the page's `image` meta field. Falls back to the first asset if the meta field isn't set.
+  This is an image URL associated with your media. We suggest that you use an image of at least 1200x630 pixels.
+
+  `fb:app_id`: Add a `fb_app_id` meta field to your site
+  The unique ID that lets Facebook know the identity of your site.
+
+  Further reading: https://developers.facebook.com/docs/sharing/best-practices#tags
+{% endcomment %}
+<meta property="og:site_name" content="{{site.title | escape}}">
+<meta property="og:title" content="{{title | escape}}">
+<meta property="og:url" content="{{permalink | escape}}">
+<meta property="og:description" content="{{excerpt | fallback:site.meta.description | strip_html | escape}}">
+{% if current.assets.size > 0 or current.meta.image %}
+  {% assign og_image = current.meta.image | fallback: current.assets.first.permalink %}
+  <meta property="og:image" content="{{og_image | escape}}">
+{% endif %}
+{% if site.meta.fb_app_id %}
+  <meta property="fb:app_id" content="{{site.meta.fb_app_id}}">
+{% endif %}

@@ -1,0 +1,26 @@
+{% comment %}
+  Usage and details:
+
+  `twitter:description`: Uses page's excerpt. Falls back to `description` site meta field.
+  A description that concisely summarizes the content of the page, as appropriate for presentation within a Tweet. Do not re-use the title text as the description, or use this field to describe the general services provided by the website. Description text will be truncated at the word to 200 characters.
+
+  `twitter:image`: Uses the page's `image` meta field. Falls back to the first asset if the meta field isn't set.
+  URL to a unique image representing the content of the page. Do not use a generic image such as your website logo, author photo, or other image that spans multiple pages. The image must be a minimum size of 120px by 120px and must be less than 1MB in file size. For an expanded tweet and its detail page, the image will be cropped to a 4:3 aspect ratio and resized to be displayed at 120px by 90px. The image will also be cropped and resized to 120px by 120px for use in embedded tweets.
+
+  `twitter:site`: Add a `twitter` meta field to your site and enter your Twitter username.
+  The Twitter @username the card should be attributed to.
+
+  Further reading: https://dev.twitter.com/cards/types/summary
+{% endcomment %}
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{title | escape}}" />
+<meta name="twitter:description" content="{{excerpt | fallback:site.meta.description | strip_html | escape}}" />
+<meta name="twitter:url" content="{{permalink | escape}}" />
+{% if site.meta.twitter %}
+  <meta name="twitter:site" content="@{{ site.meta.twitter | remove: '@' }}" />
+{% endif %}
+{% if current.assets.size > 0 or current.meta.image %}
+  {% assign twitter_image = current.meta.image | fallback: current.assets.first.permalink %}
+  <meta name="twitter:image" content="{{ twitter_image | escape }}" />
+{% endif %}
